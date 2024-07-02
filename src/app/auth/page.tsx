@@ -1,5 +1,5 @@
-import Image from "next/image"
-import { SignInContainer } from "./_components/SignInContainer"
+import Image from 'next/image'
+import { SignInContainer } from './_components/SignInContainer'
 
 export default function Page() {
   return (
