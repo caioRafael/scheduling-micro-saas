@@ -1,3 +1,10 @@
+import { PatientsList } from './_components/PatientsList'
+
 export default function PatientsPage() {
-  return <div>Patients</div>
+  return (
+    <div className="flex flex-col w-full p-6">
+      Patients
+      <PatientsList />
+    </div>
+  )
 }
