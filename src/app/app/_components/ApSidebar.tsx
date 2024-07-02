@@ -22,7 +22,7 @@ export function ApSidebar() {
       <SidebarContent className="flex-grow">
         <SidebarNavItem href="/app" active={pathname === '/app'}>
           <House />
-          Home
+          Inicio
         </SidebarNavItem>
         <SidebarNavItem
           href="/app/patients"
