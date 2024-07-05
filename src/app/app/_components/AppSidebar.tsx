@@ -26,7 +26,7 @@ export function ApSidebar() {
         </SidebarNavItem>
         <SidebarNavItem
           href="/app/patients"
-          active={pathname === '/app/patients'}
+          active={pathname.includes('/app/patients')}
         >
           <Users />
           Pacientes
@@ -35,7 +35,7 @@ export function ApSidebar() {
       <SidebarFooter>
         <SidebarNavItem
           href="/app/profile"
-          active={pathname === '/app/profile'}
+          active={pathname.includes('/app/profile')}
         >
           <User />
           Perfil

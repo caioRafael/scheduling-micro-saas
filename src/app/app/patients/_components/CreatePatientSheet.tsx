@@ -40,8 +40,6 @@ export function CreatePatientSheet({ userId }: CreatePatientSheetProps) {
   })
 
   const handleSubmit = async (data: z.infer<typeof patientFormSchema>) => {
-    console.log(data)
-
     await createPatient({ ...data, birthday: new Date(data.birthday) }, userId)
     router.refresh()
 

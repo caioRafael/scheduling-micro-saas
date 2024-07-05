@@ -10,4 +10,5 @@ export interface Patient extends Entity {
   city: string
   state: string
   zip: string
+  userId?: string
 }

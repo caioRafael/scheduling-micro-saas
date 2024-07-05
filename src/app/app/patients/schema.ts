@@ -21,3 +21,8 @@ export const patientFormSchema = z.object({
   state: z.string().min(1, 'Estado é obrigatório'),
   zip: z.string().min(1, 'CEP é obrigatório'),
 })
+
+export const ScheduleFormSchema = z.object({
+  startTime: z.string().min(1, 'Horário de início é obrigatório'),
+  endTime: z.string().min(1, 'Horário de fim é obrigatório'),
+})
