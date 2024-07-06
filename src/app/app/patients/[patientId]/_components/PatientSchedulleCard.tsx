@@ -34,12 +34,22 @@ export function PatientSchedulleCard({ schedules }: PatientSchedulleCardProps) {
           <CardContent>
             <div className="grid gap-2">
               <div className="flex items-center justify-between">
-                <span>09:00 - 12:00</span>
-                <Badge>Livre</Badge>
+                <span>
+                  {schedule.startTime.toLocaleTimeString('pt-BR', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}{' '}
+                  -{' '}
+                  {schedule.endTime.toLocaleTimeString('pt-BR', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </span>
               </div>
               <div className="flex items-center justify-between">
-                <span>14:00 - 18:00</span>
-                <Badge>Livre</Badge>
+                <Badge variant={schedule.confirmed ? 'default' : 'outline'}>
+                  {schedule.confirmed ? 'Confirmado' : 'Pendente'}
+                </Badge>
               </div>
             </div>
           </CardContent>

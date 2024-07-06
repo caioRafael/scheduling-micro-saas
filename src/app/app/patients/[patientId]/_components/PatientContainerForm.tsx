@@ -42,7 +42,6 @@ export function PatientContainerForm() {
   }, [])
 
   const handleSubmit = async (data: z.infer<typeof patientFormSchema>) => {
-    console.log(data)
     if (userId !== patient?.userId) {
       toast({
         title: 'Acesso negado',

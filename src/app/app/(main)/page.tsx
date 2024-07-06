@@ -5,9 +5,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { auth } from '@/services/auth'
 import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react'
+import { findListSchedules } from './actions'
+import { WeekCalendar } from './_components/WeekCalendar'
 
 export default async function Home() {
+  const session = await auth()
+  const schedules = await findListSchedules(session?.user?.id || '')
   return (
     <div className="bg-background rounded-lg p-6 w-full">
       <div className="flex items-center justify-between mb-6">
@@ -15,7 +20,12 @@ export default async function Home() {
           <Button variant="ghost" size="icon">
             <ChevronLeft className="w-5 h-5" />
           </Button>
-          <h2 className="text-2xl font-bold">Junho 2024</h2>
+          <h2 className="text-2xl font-bold">
+            {new Date().toLocaleDateString('pt-BR', {
+              month: 'long',
+              year: 'numeric',
+            })}
+          </h2>
           <Button variant="ghost" size="icon">
             <ChevronRight className="w-5 h-5" />
           </Button>
@@ -41,76 +51,7 @@ export default async function Home() {
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-bold">Visão Semanal</h3>
           </div>
-          <div className="grid grid-cols-7 gap-4">
-            <div className="space-y-2">
-              <div className="bg-primary rounded-lg p-2 text-primary-foreground font-medium">
-                Segunda
-              </div>
-              <div className="bg-primary rounded-lg p-2 text-primary-foreground">
-                <div className="text-sm">9:00 - 10:30</div>
-              </div>
-              <div className="bg-muted rounded-lg p-2 text-muted-foreground">
-                <div className="text-sm">11:00 - 12:00</div>
-              </div>
-              <div className="bg-primary rounded-lg p-2 text-primary-foreground">
-                <div className="text-sm">14:00 - 15:30</div>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <div className="bg-primary rounded-lg p-2 text-primary-foreground font-medium">
-                Terça
-              </div>
-              <div className="bg-primary rounded-lg p-2 text-primary-foreground">
-                <div className="text-sm">14:00 - 15:30</div>
-              </div>
-              <div className="bg-muted rounded-lg p-2 text-muted-foreground">
-                <div className="text-sm">16:00 - 17:00</div>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <div className="bg-primary rounded-lg p-2 text-primary-foreground font-medium">
-                Quarta
-              </div>
-              <div className="bg-muted rounded-lg p-2 text-muted-foreground">
-                <div className="text-sm">Livre</div>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <div className="bg-primary rounded-lg p-2 text-primary-foreground font-medium">
-                Quinta
-              </div>
-              <div className="bg-primary rounded-lg p-2 text-primary-foreground">
-                <div className="text-sm">11:00 - 12:30</div>
-              </div>
-              <div className="bg-muted rounded-lg p-2 text-muted-foreground">
-                <div className="text-sm">14:00 - 15:00</div>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <div className="bg-muted rounded-lg p-2 text-muted-foreground font-medium">
-                Sexta
-              </div>
-              <div className="bg-muted rounded-lg p-2 text-muted-foreground">
-                <div className="text-sm">Livre</div>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <div className="bg-muted rounded-lg p-2 text-muted-foreground font-medium">
-                Sábado
-              </div>
-              <div className="bg-muted rounded-lg p-2 text-muted-foreground">
-                <div className="text-sm">Livre</div>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <div className="bg-muted rounded-lg p-2 text-muted-foreground font-medium">
-                Domingo
-              </div>
-              <div className="bg-muted rounded-lg p-2 text-muted-foreground">
-                <div className="text-sm">Livre</div>
-              </div>
-            </div>
-          </div>
+          <WeekCalendar schedules={schedules} />
         </div>
       </div>
     </div>
