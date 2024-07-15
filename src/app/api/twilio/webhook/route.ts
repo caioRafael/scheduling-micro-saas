@@ -1,13 +1,30 @@
-// import twilioClient from '@/services/twilio'
-
 import { transformQueryInJson } from '@/lib/transform-query-in-json'
+import { prisma } from '@/services/database'
 
 export async function POST(request: Request) {
-  // const client = twilioClient
   const body = await request.text()
   const jsonBody = transformQueryInJson(body)
+  const scheduleByNumber = await prisma.patient.findFirst({
+    where: {
+      phone: jsonBody.WaId,
+    },
+    include: {
+      Schedule: true,
+    },
+  })
+
+  console.log(scheduleByNumber)
 
   if (jsonBody?.Body === '1') {
+    await prisma.schedule.update({
+      where: {
+        id: scheduleByNumber?.Schedule[0].id,
+      },
+      data: {
+        ...scheduleByNumber?.Schedule[0],
+        confirmed: true,
+      },
+    })
     return new Response('Sua sessão foi marcada com sucesso')
   }
 
@@ -15,5 +32,5 @@ export async function POST(request: Request) {
     return new Response('Ok, logo será marcado outro horário')
   }
 
-  console.log(jsonBody)
+  return new Response('Ok')
 }
