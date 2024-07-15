@@ -6,6 +6,8 @@ import { usePatient } from '../_context/usePatient'
 import { useEffect } from 'react'
 import { Schedule } from '@prisma/client'
 import { EmptyState } from '@/components/empty-state'
+import { Button } from '@/components/ui/button'
+import { sendMessage } from '../actions'
 
 interface PatientSchedulleCardProps {
   schedules: Schedule[]
@@ -32,8 +34,8 @@ export function PatientSchedulleCard({ schedules }: PatientSchedulleCardProps) {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid gap-2">
-              <div className="flex items-center justify-between">
+            <div className="grid grid-cols-[1fr_200px] gap-2">
+              <div className="flex flex-col items-start justify-between">
                 <span>
                   {schedule.startTime.toLocaleTimeString('pt-BR', {
                     hour: '2-digit',
@@ -45,12 +47,13 @@ export function PatientSchedulleCard({ schedules }: PatientSchedulleCardProps) {
                     minute: '2-digit',
                   })}
                 </span>
+                <div className="flex items-center justify-between">
+                  <Badge variant={schedule.confirmed ? 'default' : 'outline'}>
+                    {schedule.confirmed ? 'Confirmado' : 'Pendente'}
+                  </Badge>
+                </div>
               </div>
-              <div className="flex items-center justify-between">
-                <Badge variant={schedule.confirmed ? 'default' : 'outline'}>
-                  {schedule.confirmed ? 'Confirmado' : 'Pendente'}
-                </Badge>
-              </div>
+              <Button onClick={() => sendMessage()}>Enviar mensagem</Button>
             </div>
           </CardContent>
         </Card>
