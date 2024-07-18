@@ -4,11 +4,12 @@ import { ChevronRight } from 'lucide-react'
 import Link from 'next/link'
 
 interface WeekCalendarProps {
+  date?: Date
   schedules: Schedule[]
 }
 
-export function WeekCalendar({ schedules }: WeekCalendarProps) {
-  const weekDates = getWeekDates()
+export function WeekCalendar({ date, schedules }: WeekCalendarProps) {
+  const weekDates = getWeekDates(date)
   return (
     <div className="grid grid-cols-7 gap-4">
       {weekDates.map((day) => (

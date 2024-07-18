@@ -5,7 +5,7 @@ interface WeekDay {
   name: string
 }
 
-const weekDays = [
+export const weekDays = [
   'Domingo',
   'Segunda',
   'Terça',
@@ -42,4 +42,8 @@ export function filterDatesBySameDay(
       date.getFullYear() === initialDate.getFullYear()
     )
   })
+}
+
+export function getWeekDayName(date: Date): string {
+  return weekDays[date.getDay()]
 }

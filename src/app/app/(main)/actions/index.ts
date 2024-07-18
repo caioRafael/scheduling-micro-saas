@@ -3,20 +3,22 @@
 import { prisma } from '@/services/database'
 
 export async function findListSchedules(userId: string) {
-  const startOfWeek = new Date()
-  startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay())
-  startOfWeek.setHours(0, 0, 0, 0)
+  const currentDate = new Date()
+  const currentMonth = currentDate.getMonth()
+  const currentYear = currentDate.getFullYear()
 
-  const endOfWeek = new Date(startOfWeek)
-  endOfWeek.setDate(endOfWeek.getDate() + 6)
-  endOfWeek.setHours(23, 59, 59, 999)
+  const startOfMonth = new Date(currentYear, currentMonth, 1)
+  startOfMonth.setHours(0, 0, 0, 0)
+
+  const endOfMonth = new Date(currentYear, currentMonth + 1, 0)
+  endOfMonth.setHours(23, 59, 59, 999)
 
   const schedules = await prisma.schedule.findMany({
     where: {
       userId,
       startTime: {
-        gte: startOfWeek,
-        lte: endOfWeek,
+        gte: startOfMonth,
+        lte: endOfMonth,
       },
     },
     include: {

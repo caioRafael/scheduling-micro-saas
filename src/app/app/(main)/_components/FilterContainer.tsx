@@ -16,7 +16,7 @@ import {
 import { DatePicker } from '@/components/calendar/DatePicker'
 
 export function FilterContainer() {
-  const { date, vision, setVision } = useSchedule()
+  const { date, vision, setVision, setDate } = useSchedule()
 
   const menuOptions = [
     {
@@ -29,23 +29,17 @@ export function FilterContainer() {
       text: 'Semana',
       onClick: () => setVision(ScheduleVisionEnum.WEEK),
     },
-    {
-      key: ScheduleVisionEnum.MONTH,
-      text: 'Mês',
-      onClick: () => setVision(ScheduleVisionEnum.MONTH),
-    },
+    // {
+    //   key: ScheduleVisionEnum.MONTH,
+    //   text: 'Mês',
+    //   onClick: () => setVision(ScheduleVisionEnum.MONTH),
+    // },
   ]
 
   return (
     <div className="flex items-center justify-between mb-6">
       <div className="flex items-center gap-4">
-        {/* <h2 className="text-2xl font-bold">
-          {date.toLocaleDateString('pt-BR', {
-            month: 'long',
-            year: 'numeric',
-          })}
-        </h2> */}
-        <DatePicker />
+        <DatePicker date={date} setDate={setDate} />
       </div>
       <div className="flex items-center gap-4">
         <DropdownMenu>

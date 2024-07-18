@@ -1,7 +1,13 @@
 'use client'
 import { ScheduleVisionEnum } from '@/interface/enuns/schdule-vision'
 import { Schedule } from '@/interface/schedule'
-import { createContext, useContext, ReactNode, useState } from 'react'
+import {
+  createContext,
+  useContext,
+  ReactNode,
+  useState,
+  useEffect,
+} from 'react'
 
 interface ScheduleContextData {
   vision: ScheduleVisionEnum
@@ -28,11 +34,24 @@ export const ScheduleProvider = ({
     ScheduleVisionEnum.WEEK,
   )
   const [date, setDate] = useState<Date>(new Date())
+
+  useEffect(() => {
+    const storedVision = localStorage.getItem('scheduleVision')
+    if (storedVision) {
+      setVision(storedVision as ScheduleVisionEnum)
+    }
+  }, [])
+
+  const setVisionLocalStorage = (value: ScheduleVisionEnum) => {
+    setVision(value)
+    localStorage.setItem('scheduleVision', value)
+  }
+
   return (
     <ScheduleContext.Provider
       value={{
         vision,
-        setVision,
+        setVision: setVisionLocalStorage,
         date,
         setDate,
         schedules,
