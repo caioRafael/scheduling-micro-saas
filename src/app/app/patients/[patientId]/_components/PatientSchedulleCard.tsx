@@ -47,12 +47,13 @@ export function PatientSchedulleCard({ schedules }: PatientSchedulleCardProps) {
                     minute: '2-digit',
                   })}
                 </span>
+                <div className="flex items-center justify-between">
+                  <Badge variant={schedule.confirmed ? 'default' : 'outline'}>
+                    {schedule.confirmed ? 'Confirmado' : 'Pendente'}
+                  </Badge>
+                </div>
               </div>
-              <div className="flex items-center justify-between">
-                <Badge variant={schedule.confirmed ? 'default' : 'outline'}>
-                  {schedule.confirmed ? 'Confirmado' : 'Pendente'}
-                </Badge>
-              </div>
+              <Button onClick={() => sendMessage()}>Enviar mensagem</Button>
             </div>
             <Button onClick={() => sendMessage()}>enviar mensagem</Button>
           </CardContent>
