@@ -35,13 +35,17 @@ export default async function ProfilePage() {
             <TabsTrigger value="settings">Configurações</TabsTrigger>
           </TabsList>
           <TabsContent value="information">
-            <div>Conteúdo da aba de Informações</div>
+            <div>
+              <h1>Aba de informações em desenvolvimento</h1>
+            </div>
           </TabsContent>
           <TabsContent value="plans">
-            <div>Conteúdo da aba de Planos</div>
+            <div>
+              <h1>Aba de planos em desenvolvimento</h1>
+            </div>
           </TabsContent>
           <TabsContent value="settings">
-            <div>Conteúdo da aba de Configurações</div>
+            <div>Aba de configurações em desenvolvimento</div>
           </TabsContent>
         </Tabs>
       </div>
