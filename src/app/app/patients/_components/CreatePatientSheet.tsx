@@ -17,7 +17,7 @@ import {
   FormMessage,
   FormField,
 } from '@/components/ui/form'
-import { useForm } from 'react-hook-form'
+import { useController, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from '@/components/ui/input'
@@ -25,8 +25,11 @@ import { Input } from '@/components/ui/input'
 import { createPatient } from '../actions'
 import { useRouter } from 'next/navigation'
 import { patientFormSchema } from '../schema'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { toast } from '@/components/ui/use-toast'
+import { MaskInput } from '@/components/MaskInput'
+import { MaskEnum } from '@/lib/mask'
+import axios from 'axios'
 
 interface CreatePatientSheetProps {
   userId: string
@@ -38,6 +41,30 @@ export function CreatePatientSheet({ userId }: CreatePatientSheetProps) {
   const form = useForm<z.infer<typeof patientFormSchema>>({
     resolver: zodResolver(patientFormSchema),
   })
+
+  const { field: zip } = useController({
+    control: form.control,
+    name: 'zip',
+    defaultValue: '',
+  })
+
+  const { field: phone } = useController({
+    control: form.control,
+    name: 'phone',
+    defaultValue: '',
+  })
+
+  useEffect(() => {
+    if (zip.value.length === 9) {
+      axios
+        .get(`https://brasilapi.com.br/api/cep/v2/${zip.value}`)
+        .then((res) => {
+          form.setValue('state', res.data.state)
+          form.setValue('city', res.data.city)
+        })
+        .catch((error) => console.log(error))
+    }
+  }, [zip])
 
   const handleSubmit = async (data: z.infer<typeof patientFormSchema>) => {
     await createPatient({ ...data, birthday: new Date(data.birthday) }, userId)
@@ -81,18 +108,26 @@ export function CreatePatientSheet({ userId }: CreatePatientSheetProps) {
               )}
             ></FormField>
             <FormField
-              name="phone"
               control={form.control}
+              name="phone"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>Telefone</FormLabel>
+                  <FormLabel>Telefone(Whatsapp) *</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <MaskInput
+                      placeholder="Digite o telefone"
+                      {...field}
+                      typeMask={MaskEnum.PHONE}
+                      type="text"
+                      maxLength={15}
+                      value={phone.value}
+                      onMaskedChange={(value) => form.setValue('phone', value)}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
-            ></FormField>
+            />
             <FormField
               name="age"
               control={form.control}
@@ -145,20 +180,28 @@ export function CreatePatientSheet({ userId }: CreatePatientSheetProps) {
                 </FormItem>
               )}
             ></FormField>
+            <FormField
+              control={form.control}
+              name="zip"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>CEP *</FormLabel>
+                  <FormControl>
+                    <MaskInput
+                      placeholder="CEP"
+                      {...field}
+                      typeMask={MaskEnum.CEP}
+                      type="text"
+                      maxLength={9}
+                      value={zip.value}
+                      onMaskedChange={(value) => form.setValue('zip', value)}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <div className="flex w-full gap-2">
-              <FormField
-                name="city"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem className="w-1/2">
-                    <FormLabel>Cidade</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              ></FormField>
               <FormField
                 name="state"
                 control={form.control}
@@ -172,20 +215,21 @@ export function CreatePatientSheet({ userId }: CreatePatientSheetProps) {
                   </FormItem>
                 )}
               ></FormField>
+              <FormField
+                name="city"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem className="w-1/2">
+                    <FormLabel>Cidade</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              ></FormField>
             </div>
-            <FormField
-              name="zip"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>CEP</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            ></FormField>
+
             <Button type="submit">Salvar</Button>
           </form>
         </Form>

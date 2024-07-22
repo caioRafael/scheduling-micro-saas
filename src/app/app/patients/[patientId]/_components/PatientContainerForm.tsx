@@ -1,6 +1,6 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
+import { useController, useForm } from 'react-hook-form'
 import { usePatient } from '../_context/usePatient'
 import { patientFormSchema } from '../../schema'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -19,6 +19,9 @@ import { toast } from '@/components/ui/use-toast'
 import { updatePatient } from '../../actions'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
+import { MaskInput } from '@/components/MaskInput'
+import { MaskEnum } from '@/lib/mask'
+import axios from 'axios'
 
 export function PatientContainerForm() {
   const { patient, isEdit, userId, setEdit, setIsSchedulePage } = usePatient()
@@ -36,6 +39,30 @@ export function PatientContainerForm() {
       state: patient?.state,
     },
   })
+
+  const { field: zip } = useController({
+    control: form.control,
+    name: 'zip',
+    defaultValue: '',
+  })
+
+  const { field: phone } = useController({
+    control: form.control,
+    name: 'phone',
+    defaultValue: '',
+  })
+
+  useEffect(() => {
+    if (zip.value.length === 9) {
+      axios
+        .get(`https://brasilapi.com.br/api/cep/v2/${zip.value}`)
+        .then((res) => {
+          form.setValue('state', res.data.state)
+          form.setValue('city', res.data.city)
+        })
+        .catch((error) => console.log(error))
+    }
+  }, [zip])
 
   useEffect(() => {
     setIsSchedulePage(false)
@@ -84,18 +111,26 @@ export function PatientContainerForm() {
           />
           <div className="grid grid-cols-2 w-full gap-2">
             <FormField
-              name="phone"
               control={form.control}
+              name="phone"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>Telefone</FormLabel>
+                  <FormLabel>Telefone(Whatsapp) *</FormLabel>
                   <FormControl>
-                    <Input {...field} disabled={!isEdit} />
+                    <MaskInput
+                      placeholder="Digite o telefone"
+                      {...field}
+                      typeMask={MaskEnum.PHONE}
+                      type="text"
+                      maxLength={15}
+                      value={phone.value}
+                      onMaskedChange={(value) => form.setValue('phone', value)}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
-            ></FormField>
+            />
             <FormField
               name="age"
               control={form.control}
@@ -149,18 +184,26 @@ export function PatientContainerForm() {
               )}
             ></FormField>
             <FormField
-              name="city"
               control={form.control}
+              name="zip"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>Cidade</FormLabel>
+                  <FormLabel>CEP *</FormLabel>
                   <FormControl>
-                    <Input {...field} disabled={!isEdit} />
+                    <MaskInput
+                      placeholder="CEP"
+                      {...field}
+                      typeMask={MaskEnum.CEP}
+                      type="text"
+                      maxLength={9}
+                      value={zip.value}
+                      onMaskedChange={(value) => form.setValue('zip', value)}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
-            ></FormField>
+            />
             <FormField
               name="state"
               control={form.control}
@@ -175,11 +218,11 @@ export function PatientContainerForm() {
               )}
             ></FormField>
             <FormField
-              name="zip"
+              name="city"
               control={form.control}
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>CEP</FormLabel>
+                  <FormLabel>Cidade</FormLabel>
                   <FormControl>
                     <Input {...field} disabled={!isEdit} />
                   </FormControl>
