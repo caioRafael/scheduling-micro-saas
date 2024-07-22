@@ -26,14 +26,12 @@ export function SignInContainer() {
           {/* <ChromeIcon className="mr-2 h-4 w-4" /> */}
           Entrar com Google
         </Button>
-        <Button variant="outline" className="w-full">
-          {/* <FacebookIcon className="mr-2 h-4 w-4" /> */}
+        {/* <Button variant="outline" className="w-full">
           Entrar com Facebook
         </Button>
         <Button variant="outline" className="w-full">
-          {/* <TwitterIcon className="mr-2 h-4 w-4" /> */}
           Entrar com Twitter
-        </Button>
+        </Button> */}
       </CardContent>
       <CardFooter />
     </Card>

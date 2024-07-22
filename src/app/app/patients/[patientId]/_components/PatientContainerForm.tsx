@@ -62,10 +62,12 @@ export function PatientContainerForm() {
         })
         .catch((error) => console.log(error))
     }
+    // eslint-disable-next-line
   }, [zip])
 
   useEffect(() => {
     setIsSchedulePage(false)
+    // eslint-disable-next-line
   }, [])
 
   const handleSubmit = async (data: z.infer<typeof patientFormSchema>) => {
