@@ -6,8 +6,6 @@ import { usePatient } from '../_context/usePatient'
 import { useEffect } from 'react'
 import { Schedule } from '@prisma/client'
 import { EmptyState } from '@/components/empty-state'
-import { Button } from '@/components/ui/button'
-import { sendMessage } from '../actions'
 
 interface PatientSchedulleCardProps {
   schedules: Schedule[]
