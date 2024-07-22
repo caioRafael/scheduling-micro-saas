@@ -53,9 +53,8 @@ export function PatientSchedulleCard({ schedules }: PatientSchedulleCardProps) {
                   </Badge>
                 </div>
               </div>
-              <Button onClick={() => sendMessage()}>Enviar mensagem</Button>
             </div>
-            <Button onClick={() => sendMessage()}>enviar mensagem</Button>
+            {/* <Button onClick={() => sendMessage()}>enviar mensagem</Button> */}
           </CardContent>
         </Card>
       ))}
