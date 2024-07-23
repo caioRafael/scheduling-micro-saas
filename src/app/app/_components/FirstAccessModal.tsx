@@ -10,7 +10,7 @@ import {
 import { useEffect, useState } from 'react'
 
 export function FirstAccessModal() {
-  const [isFirstAccess, setIsFirstAccess] = useState<boolean>(false)
+  const [isFirstAccess, setIsFirstAccess] = useState<boolean>(true)
   useEffect(() => {
     const firstAccess = localStorage.getItem('firstTimeUser')
     if (firstAccess === 'true') {
