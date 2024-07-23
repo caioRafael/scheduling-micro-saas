@@ -11,13 +11,22 @@ import {
 import { House, User, Users } from 'lucide-react'
 import { SignOutButton } from './SignOutButton'
 import { usePathname } from 'next/navigation'
+import { useEffect } from 'react'
+import { FirstAccessModal } from './FirstAccessModal'
 
 export function ApSidebar() {
   const pathname = usePathname()
+
+  useEffect(() => {
+    if (!localStorage.getItem('firstTimeUser')) {
+      localStorage.setItem('firstTimeUser', 'true')
+    }
+  }, [])
   return (
     <Sidebar className="flex border-r berder-border">
+      <FirstAccessModal />
       <SidebarHeader>
-        <SidebarTitle>PsicoAgenda</SidebarTitle>
+        <SidebarTitle>HealthPlaning</SidebarTitle>
       </SidebarHeader>
       <SidebarContent className="flex-grow">
         <SidebarNavItem href="/app" active={pathname === '/app'}>
