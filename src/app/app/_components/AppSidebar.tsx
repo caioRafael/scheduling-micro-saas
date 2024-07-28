@@ -13,6 +13,7 @@ import { SignOutButton } from './SignOutButton'
 import { usePathname } from 'next/navigation'
 import { useEffect } from 'react'
 import { FirstAccessModal } from './FirstAccessModal'
+import { SuportButton } from './SuportButton'
 
 export function ApSidebar() {
   const pathname = usePathname()
@@ -50,6 +51,7 @@ export function ApSidebar() {
           Perfil
         </SidebarNavItem>
         <SignOutButton />
+        <SuportButton />
       </SidebarFooter>
     </Sidebar>
   )
