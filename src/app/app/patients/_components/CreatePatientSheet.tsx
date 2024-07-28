@@ -30,6 +30,21 @@ import { toast } from '@/components/ui/use-toast'
 import { MaskInput } from '@/components/MaskInput'
 import { MaskEnum } from '@/lib/mask'
 import axios from 'axios'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+import brazilianStates from '@/lib/brasilianStates'
+import {
+  Command,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command'
+import { CheckIcon } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { CommandGroup } from 'cmdk'
 
 interface CreatePatientSheetProps {
   userId: string
@@ -206,20 +221,61 @@ export function CreatePatientSheet({ userId }: CreatePatientSheetProps) {
                 name="state"
                 control={form.control}
                 render={({ field }) => (
-                  <FormItem className="w-1/2">
+                  <FormItem className="w-1/4">
                     <FormLabel>Estado</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
+                    <Popover>
+                      <PopoverTrigger asChild className="w-full">
+                        <FormControl>
+                          <Button
+                            variant={'outline'}
+                            className="items-start justify-start w-full"
+                          >
+                            {field.value
+                              ? brazilianStates.find(
+                                  (uf) => field.value === uf.abbreviation,
+                                )?.abbreviation
+                              : 'Estado'}
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[200px] p-0">
+                        <Command>
+                          <CommandList className="overflow-y-scroll">
+                            <CommandInput placeholder="Selecione a UF" />
+                            <CommandGroup>
+                              {brazilianStates.map((uf) => (
+                                <CommandItem
+                                  key={uf.abbreviation}
+                                  value={uf.abbreviation}
+                                  onSelect={(currentValue) => {
+                                    form.setValue('state', uf.abbreviation)
+                                    console.log('olá mundo ', currentValue)
+                                  }}
+                                >
+                                  {uf.abbreviation} - {uf.name}
+                                  <CheckIcon
+                                    className={cn(
+                                      'ml-auto h-4 w-4',
+                                      uf.abbreviation === field.value
+                                        ? 'opacity-100'
+                                        : 'opacity-0',
+                                    )}
+                                  />
+                                </CommandItem>
+                              ))}
+                            </CommandGroup>
+                          </CommandList>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
                   </FormItem>
                 )}
-              ></FormField>
+              />
               <FormField
                 name="city"
                 control={form.control}
                 render={({ field }) => (
-                  <FormItem className="w-1/2">
+                  <FormItem className="w-full">
                     <FormLabel>Cidade</FormLabel>
                     <FormControl>
                       <Input {...field} />
