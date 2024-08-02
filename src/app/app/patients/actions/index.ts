@@ -67,6 +67,9 @@ export async function listSchedulesByPatient(patientId: string) {
     include: {
       patient: true,
     },
+    orderBy: {
+      startTime: 'desc',
+    },
   })
 
   return schedules

@@ -15,7 +15,7 @@ export function WeekCalendar({ date, schedules }: WeekCalendarProps) {
       {weekDates.map((day) => (
         <div className="space-y-2" key={day.date.toISOString()}>
           <div className="bg-primary rounded-lg p-2 text-primary-foreground font-medium">
-            {day.name} - {day.date.toLocaleDateString('pt-BR')}
+            {day.name} <br /> {day.date.toLocaleDateString('pt-BR')}
           </div>
           {filterDatesBySameDay(day.date, schedules).map((schedule) => (
             <div
