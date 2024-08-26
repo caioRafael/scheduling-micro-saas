@@ -16,7 +16,6 @@ export function PatientSchedulleCard({ schedules }: PatientSchedulleCardProps) {
 
   useEffect(() => {
     setIsSchedulePage(true)
-    // eslint-disable-next-line
   }, [])
 
   if (schedules.length === 0) {

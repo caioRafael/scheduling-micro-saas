@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { usePatient } from '../_context/usePatient'
-import { PatientCreateScheduleSheet } from './PatientCreateScheduleSheet'
+import { PatientCreateScheduleModal } from './PatientCreateScheduleModal'
 import { Edit } from 'lucide-react'
 
 export function PatientPageHeader() {
@@ -13,7 +13,7 @@ export function PatientPageHeader() {
       <Button variant="outline" className="gap-2" onClick={() => setEdit(true)}>
         <Edit /> Editar
       </Button>
-      {isSchedulePage && <PatientCreateScheduleSheet />}
+      {isSchedulePage && <PatientCreateScheduleModal />}
     </div>
   )
 }

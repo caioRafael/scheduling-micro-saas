@@ -22,8 +22,14 @@ import { useEffect } from 'react'
 import { MaskInput } from '@/components/MaskInput'
 import { MaskEnum } from '@/lib/mask'
 import axios from 'axios'
+import { Combobox, IComboboxOption } from '@/components/combobox'
+import { Tag } from '@/interface/tag'
 
-export function PatientContainerForm() {
+interface PatientContainerFormProps {
+  tagList?: Tag[]
+}
+
+export function PatientContainerForm({ tagList }: PatientContainerFormProps) {
   const { patient, isEdit, userId, setEdit, setIsSchedulePage } = usePatient()
   const route = useRouter()
   const form = useForm<z.infer<typeof patientFormSchema>>({
@@ -37,6 +43,7 @@ export function PatientContainerForm() {
       city: patient?.city,
       gender: patient?.gender,
       state: patient?.state,
+      patientTagId: patient?.patientTagId || '',
     },
   })
 
@@ -94,6 +101,32 @@ export function PatientContainerForm() {
     }
   }
 
+  const tagOptionList: IComboboxOption[] =
+    tagList?.map((value) => {
+      return {
+        key: value.id as string,
+        value: value.id as string,
+        text: value.title,
+        viewOption: () => (
+          <div className="w-full flex flex-row gap-2">
+            <div className="w-3 h-3" style={{ background: value.color }} />
+            {value.title}
+          </div>
+        ),
+      }
+    }) || []
+
+  const onViewTag = (tagId: string | number) => {
+    const tag = tagList?.find((tag) => tag.id === tagId)
+
+    return (
+      <div className="w-full flex flex-row gap-2 items-center justify-center">
+        <div className="w-3 h-3" style={{ background: tag?.color || '' }} />
+        {tag?.title || ''}
+      </div>
+    )
+  }
+
   return (
     <div className="flex flex-col w-full">
       <Form {...form}>
@@ -111,6 +144,29 @@ export function PatientContainerForm() {
               </FormItem>
             )}
           />
+          {tagList && (
+            <FormField
+              control={form.control}
+              name="patientTagId"
+              render={({ field }) => (
+                <FormItem className="w-full flex flex-col">
+                  <FormLabel>Tag</FormLabel>
+                  <FormControl>
+                    <Combobox
+                      placeholder="Selecione uma tag"
+                      options={tagOptionList}
+                      selected={field.value as string}
+                      setSelected={(value) =>
+                        form.setValue('patientTagId', value as string)
+                      }
+                      viewSelected={onViewTag}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            ></FormField>
+          )}
           <div className="grid grid-cols-2 w-full gap-2">
             <FormField
               control={form.control}

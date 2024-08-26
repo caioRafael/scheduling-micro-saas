@@ -9,17 +9,14 @@ export const patientFormSchema = z.object({
       (val) => val.length === 14 || val.length === 15,
       'Telefone inválido',
     ),
-  age: z
-    .string()
-    .refine((val) => !isNaN(Number(val)), 'Idade inválida')
-    .transform((val) => Number(val))
-    .refine((val) => val >= 0, 'Idade inválida'),
+  age: z.number().refine((val) => val >= 0, 'Idade inválida'),
   birthday: z.string().min(1, 'Data de nascimento inválida'),
   gender: z.string().min(1, 'Gênero é obrigatório'),
   address: z.string().min(1, 'Endereço é obrigatório'),
   city: z.string().min(1, 'Cidade é obrigatória'),
   state: z.string().min(1, 'Estado é obrigatório'),
   zip: z.string().min(1, 'CEP é obrigatório'),
+  patientTagId: z.string().optional(),
 })
 
 export const ScheduleFormSchema = z.object({

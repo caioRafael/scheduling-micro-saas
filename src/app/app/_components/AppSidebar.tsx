@@ -8,7 +8,7 @@ import {
   SidebarNavItem,
   SidebarTitle,
 } from '@/components/sidebar'
-import { House, User, Users } from 'lucide-react'
+import { House, User, Users, Wrench } from 'lucide-react'
 import { SignOutButton } from './SignOutButton'
 import { usePathname } from 'next/navigation'
 import { useEffect } from 'react'
@@ -40,6 +40,10 @@ export function ApSidebar() {
         >
           <Users />
           Pacientes
+        </SidebarNavItem>
+        <SidebarNavItem href="/app/tools/tags">
+          <Wrench />
+          Ferramentas
         </SidebarNavItem>
       </SidebarContent>
       <SidebarFooter>

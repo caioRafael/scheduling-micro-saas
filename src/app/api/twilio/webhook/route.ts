@@ -13,8 +13,6 @@ export async function POST(request: Request) {
     },
   })
 
-  console.log(scheduleByNumber)
-
   if (jsonBody?.Body === '1') {
     await prisma.schedule.update({
       where: {

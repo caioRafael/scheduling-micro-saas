@@ -5,6 +5,9 @@ const AppTitleObject = {
   patients: {
     title: 'Pacientes',
   },
+  tools: {
+    title: 'Ferramentas',
+  },
   profile: {
     title: 'Perfil',
   },

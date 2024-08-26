@@ -20,7 +20,7 @@ export function WeekCalendar({ date, schedules }: WeekCalendarProps) {
           {filterDatesBySameDay(day.date, schedules).map((schedule) => (
             <div
               key={schedule.id}
-              className={`flex flex-row items-center justify-between rounded-lg p-2 ${schedule.confirmed ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}
+              className={`flex flex-row bg-slate-200 items-center justify-between rounded-lg p-2 ${schedule.confirmed ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}
             >
               <div className="text-sm">
                 <p>

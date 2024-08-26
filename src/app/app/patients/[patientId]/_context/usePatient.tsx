@@ -11,6 +11,7 @@ interface PatientContextProps {
   setEdit: (value: boolean) => void
   isSchedulePage: boolean
   setIsSchedulePage: (value: boolean) => void
+  hasSchedule: boolean
 }
 
 const PatientContext = createContext<PatientContextProps | undefined>(undefined)
@@ -19,10 +20,12 @@ export const PatientProvider = ({
   children,
   initialData,
   userId,
+  hasSchedule,
 }: {
   children: ReactNode
   initialData: Patient
   userId: string
+  hasSchedule: boolean
 }) => {
   const [patient, setPatient] = useState<Patient | null>(initialData)
   const [isEdit, setEdit] = useState(false)
@@ -38,6 +41,7 @@ export const PatientProvider = ({
         setEdit,
         isSchedulePage,
         setIsSchedulePage,
+        hasSchedule,
       }}
     >
       {children}

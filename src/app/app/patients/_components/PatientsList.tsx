@@ -11,8 +11,8 @@ import { Eye, UserIcon } from 'lucide-react'
 import { listPatients } from '../actions'
 import { auth } from '@/services/auth'
 import { EmptyState } from '@/components/empty-state'
-import { CreatePatientSheet } from './CreatePatientSheet'
 import Link from 'next/link'
+import { CreatePatientModal } from './CreatePatientModal'
 
 const columns: DataColumnsTable<Patient>[] = [
   {
@@ -56,7 +56,7 @@ export async function PatientsList() {
   return (
     <DataTable>
       <DataTableHeader className="justify-end">
-        <CreatePatientSheet userId={userId} />
+        <CreatePatientModal userId={userId} />
       </DataTableHeader>
       {patients.length > 0 ? (
         <DataTableContent data={patients} columns={columns} />

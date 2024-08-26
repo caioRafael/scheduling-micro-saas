@@ -24,10 +24,11 @@ model User {
   // Optional for WebAuthn support
   Authenticator Authenticator[]
 
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  Patient   Patient[]
-  Schedule  Schedule[]
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  Patient    Patient[]
+  Schedule   Schedule[]
+  PatientTag PatientTag[]
 }
 
 model Account {
@@ -88,21 +89,23 @@ model Authenticator {
 }
 
 model Patient {
-  id        String     @id @default(cuid())
-  name      String
-  phone     String
-  age       Int
-  birthday  DateTime
-  gender    String
-  address   String
-  city      String
-  state     String
-  zip       String
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  userId    String
-  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  Schedule  Schedule[]
+  id           String      @id @default(cuid())
+  name         String
+  phone        String
+  age          Int
+  birthday     DateTime
+  gender       String
+  address      String
+  city         String
+  state        String
+  zip          String
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  userId       String
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Schedule     Schedule[]
+  patientTagId String?
+  patientTag   PatientTag? @relation(fields: [patientTagId], references: [id], onDelete: Cascade)
 
   @@map("patients")
 }
@@ -118,4 +121,15 @@ model Schedule {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   patientId String
   patient   Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+}
+
+model PatientTag {
+  id          String  @id @default(cuid())
+  title       String
+  description String?
+  color       String
+
+  userId   String
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  patients Patient[]
 }

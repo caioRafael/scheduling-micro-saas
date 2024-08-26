@@ -2,15 +2,6 @@
 
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui/sheet'
 import { CalendarPlus } from 'lucide-react'
 import { z } from 'zod'
 import { ScheduleFormSchema } from '../../schema'
@@ -24,19 +15,36 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { createSchedule } from '../../actions'
 import { usePatient } from '../_context/usePatient'
 import { useRouter } from 'next/navigation'
 import { toast } from '@/components/ui/use-toast'
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogDescription,
+} from '@/components/ui/dialog'
 
-export function PatientCreateScheduleSheet() {
+export function PatientCreateScheduleModal() {
   const ref = useRef<HTMLButtonElement>(null)
   const router = useRouter()
-  const { patient, userId } = usePatient()
+  const { patient, userId, hasSchedule } = usePatient()
+  const [open, setOpen] = useState<boolean>(false)
   const form = useForm<z.infer<typeof ScheduleFormSchema>>({
     resolver: zodResolver(ScheduleFormSchema),
   })
+
+  useEffect(() => {
+    if (!hasSchedule) {
+      // ref.current?.click()
+      setOpen(true)
+    }
+  }, [])
 
   const handleSubmit = async (data: z.infer<typeof ScheduleFormSchema>) => {
     await createSchedule({
@@ -57,19 +65,19 @@ export function PatientCreateScheduleSheet() {
     })
   }
   return (
-    <Sheet>
-      <SheetTrigger asChild>
+    <Dialog onOpenChange={setOpen} open={open}>
+      <DialogTrigger asChild>
         <Button ref={ref} className="gap-2">
           <CalendarPlus /> Adicionar
         </Button>
-      </SheetTrigger>
-      <SheetContent>
-        <SheetHeader>
-          <SheetTitle>Agendar consulta</SheetTitle>
-          <SheetDescription>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Agendar consulta</DialogTitle>
+          <DialogDescription>
             Selecione o dia e horário para agendar uma consulta.
-          </SheetDescription>
-        </SheetHeader>
+          </DialogDescription>
+        </DialogHeader>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
@@ -101,12 +109,12 @@ export function PatientCreateScheduleSheet() {
                 </FormItem>
               )}
             />
-            <SheetFooter>
+            <DialogFooter>
               <Button type="submit">Agendar</Button>
-            </SheetFooter>
+            </DialogFooter>
           </form>
         </Form>
-      </SheetContent>
-    </Sheet>
+      </DialogContent>
+    </Dialog>
   )
 }
